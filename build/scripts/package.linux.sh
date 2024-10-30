@@ -68,6 +68,10 @@ cp -r resources/_common/applications resources/deb/usr/share
 cp -r resources/_common/icons resources/deb/usr/share
 sed -i -e "s/^Version:.*/Version: $VERSION/" -e "s/^Architecture:.*/Architecture: $arch/" resources/deb/DEBIAN/control
 dpkg-deb --root-owner-group --build resources/deb "sourcegit_$VERSION-1_$arch.deb"
+ls -la
+dpkg-source --root-owner-group --build resources/deb "sourcegit_$VERSION-1_$arch.deb"
 
 rpmbuild -bb --target="$target" resources/rpm/SPECS/build.spec --define "_topdir $(pwd)/resources/rpm" --define "_version $VERSION"
 mv "resources/rpm/RPMS/$target/sourcegit-$VERSION-1.$target.rpm" ./
+mv "resources/rpm/SRPMS/sourcegit-*src.rpm" ./
+ls -la
