@@ -7,65 +7,6 @@ on:
         required: true
         type: string
 jobs:
-  windows-portable:
-    name: Package portable Windows app
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        runtime: [win-x64, win-arm64]
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Download build
-        uses: actions/download-artifact@v4
-        with:
-          name: sourcegit.${{ matrix.runtime }}
-          path: build/SourceGit
-      - name: Package
-        env:
-          VERSION: ${{ inputs.version }}
-          RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.windows-portable.sh
-      - name: Upload package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: package.${{ matrix.runtime }}
-          path: build/sourcegit_*.zip
-      - name: Delete temp artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: sourcegit.${{ matrix.runtime }}
-  osx-app:
-    name: Package OSX app
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        runtime: [osx-x64, osx-arm64]
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Download build
-        uses: actions/download-artifact@v4
-        with:
-          name: sourcegit.${{ matrix.runtime }}
-          path: build
-      - name: Package
-        env:
-          VERSION: ${{ inputs.version }}
-          RUNTIME: ${{ matrix.runtime }}
-        run: |
-          mkdir build/SourceGit
-          tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
-          ./build/scripts/package.osx-app.sh
-      - name: Upload package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: package.${{ matrix.runtime }}
-          path: build/sourcegit_*.zip
-      - name: Delete temp artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: sourcegit.${{ matrix.runtime }}
   linux:
     name: Package Linux
     runs-on: ubuntu-latest
