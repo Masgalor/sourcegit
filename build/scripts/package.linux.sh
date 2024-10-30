@@ -67,7 +67,7 @@ ln -rsf resources/deb/opt/sourcegit/sourcegit resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share
 cp -r resources/_common/icons resources/deb/usr/share
 sed -i -e "s/^Version:.*/Version: $VERSION/" -e "s/^Architecture:.*/Architecture: $arch/" resources/deb/DEBIAN/control
-touch resources/deb/DEBIAN/control/changelog
+touch resources/deb/DEBIAN/changelog
 dpkg-deb --root-owner-group --build resources/deb "sourcegit_$VERSION-1_$arch.deb"
 dpkg-source --root-owner-group --build resources/deb "sourcegit_$VERSION-1_$arch.src.deb"
 ls -la
